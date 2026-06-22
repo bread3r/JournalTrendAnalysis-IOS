@@ -1,6 +1,6 @@
 workflows:
   ios-build:
-    name: iOS Build IPA (AltStore)
+    name: iOS Build (AltStore)
 
     environment:
       flutter: stable
@@ -10,15 +10,9 @@ workflows:
       - name: Flutter pub get
         script: flutter pub get
 
-      - name: Clean iOS pods (safe)
+      - name: Build iOS app (no IPA export)
         script: |
-          cd ios
-          rm -rf Pods Podfile.lock || true
-          cd ..
-
-      - name: Build IPA
-        script: |
-          flutter build ipa --release --no-codesign
+          flutter build ios --release
 
     artifacts:
-      - build/ios/ipa/*.ipa
+      - build/ios/iphoneos/*.app
