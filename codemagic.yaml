@@ -1,0 +1,35 @@
+workflows:
+  ios-workflow:
+    name: Flutter iOS Build
+
+    environment:
+      flutter: stable
+      xcode: latest
+
+      cocoapods: default
+
+    scripts:
+      - name: Get Flutter packages
+        script: |
+          flutter clean
+          flutter pub get
+
+      - name: Install Pods
+        script: |
+          cd ios
+          pod install
+
+      - name: Build iOS
+        script: |
+          flutter build ipa \
+            --release \
+            --export-options-plist=/Users/builder/export_options.plist
+
+    artifacts:
+      - build/ios/ipa/*.ipa
+      - build/ios/archive/*.xcarchive
+
+    publishing:
+      email:
+        recipients:
+          - your_email@example.com
