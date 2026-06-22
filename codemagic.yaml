@@ -1,6 +1,7 @@
 workflows:
   ios-build:
-    name: iOS Build IPA (Free Apple ID)
+    name: iOS Build IPA (AltStore)
+
     environment:
       flutter: stable
       xcode: latest
@@ -9,14 +10,15 @@ workflows:
       - name: Flutter pub get
         script: flutter pub get
 
-      - name: Install pods
+      - name: Clean iOS pods (safe)
         script: |
           cd ios
-          pod install
+          rm -rf Pods Podfile.lock || true
+          cd ..
 
       - name: Build IPA
         script: |
-          flutter build ipa --release
+          flutter build ipa --release --no-codesign
 
     artifacts:
       - build/ios/ipa/*.ipa
